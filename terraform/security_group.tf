@@ -1,8 +1,9 @@
-# Part 2 of the Terraform exam
+# Terraform security_group
 # Createed a aws security group using aws_security_group resource
 # Open port 22 for ssh ingress=inbound rules and egress=outbound rules
+# Open port 5001 for our python webapp and 8080 for jenkins usage
 resource "aws_security_group" "sg" {
-  vpc_id      = "aws_vpc.custom_vpc[0].id" # TODO: Fix this
+  vpc_id      = var.vpc_id
   description = "Allow inbound traffic for SSH and HTTP"
   name        = "${var.name}-sg"
   ingress {

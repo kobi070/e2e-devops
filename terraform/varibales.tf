@@ -10,6 +10,12 @@ variable "name" {
   default     = "Kobi"
 }
 
+variable "vpc_id" {
+  type = string
+  description = "The VPC ID given to us by Instcurtor"
+  default = "vpc-044604d0bfb707142"
+}
+
 variable "ubuntu_ami" {
   type        = string
   description = "Ubuntu AMI"
