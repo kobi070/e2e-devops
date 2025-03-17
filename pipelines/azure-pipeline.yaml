@@ -1,6 +1,7 @@
 trigger:
 - dev
 
+    
 variables:
   DOCKER_REGISTRY: 'kobi070'
   REPO_NAME: 'exam'
@@ -57,18 +58,8 @@ stages:
   jobs:
   - job: PushToDockerHubJob
     steps:
-    - task: Docker@2
-      inputs:
-        command: 'login'
-        containerRegistry: 'KobiConnection'  # Reference your Azure Service Connection here
-      displayName: 'Login to Docker Registry'
-
-    - task: Docker@2
-      inputs:
-        command: 'push'
-        containerRegistry: 'KobiConnection'  # Reference your Azure Service Connection here
-        repository: '$(DOCKER_REGISTRY)/$(REPO_NAME)'
-        tags: |
-          $(IMAGE_TAG)
-          latest
+    - script: |
+        echo $(DOCKERHUB_CREDENTIALS_PSW) | docker login -u $(DOCKERHUB_CREDENTIALS_USR) --password-stdin
+        echo docker push $(DOCKER_REGISTRY)/$(REPO_NAME):$(IMAGE_TAG)
+        echo docker push $(DOCKER_REGISTRY)/$(REPO_NAME):latest
       displayName: 'Push Docker Image to Docker Hub'
