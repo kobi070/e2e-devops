@@ -32,8 +32,8 @@ def home():
                "Public IP": instance.get("PublicIpAddress", "N/A")
            })
   
-   # Fetch VPCs
-   vpcs = ec2_client.describe_vpcs()
+   # Fetch VPCs - The fixing of the bugs was adding the vpcs, lbs and amis resource which we lacked --> we brought them trough getting them from the ec2_client and elb_client we created    
+   vpcs = ec2_client.describe_vpcs() 
    vpc_data = [{"VPC ID": vpc["VpcId"], "CIDR": vpc["CidrBlock"]} for vpc in vpcs["Vpcs"]]
   
    # Fetch Load Balancers
