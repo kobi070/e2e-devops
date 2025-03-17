@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('docker-hub-creds')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         DOCKER_REGISTRY = 'kobi070'
-        REPO_NAME = 'exam'  // Change to 'be-exam' for backend pipeline
+        REPO_NAME = 'exam'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
     }
     stages {
