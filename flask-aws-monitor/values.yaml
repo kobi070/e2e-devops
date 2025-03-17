@@ -1,0 +1,48 @@
+# Application configuration
+app:
+  name: exam
+
+# Replica count for the deployment
+replicaCount: 1
+
+# Container image configuration
+image:
+  repository: kobi070/exam
+  tag: latest
+  pullPolicy: Always
+
+# Service configuration
+service:
+  # Internal container port
+  port: 5001
+  # External port for the service
+  externalPort: 80
+  protocol: TCP
+  # Service type: ClusterIP, NodePort, or LoadBalancer
+  type: LoadBalancer
+
+# AWS credentials configuration
+aws:
+  secretName: aws-secrets
+
+# Additional environment variables
+extraEnv: []
+
+# Resource requests and limits
+resources: {}
+
+# Pod security context
+securityContext: {}
+
+# Node selector for deployment placement
+nodeSelector: {}
+# Tolerations for deployment placement
+tolerations: []
+# Affinity for deployment placement
+affinity: {}
+# Liveness and readiness probes
+probes:
+  liveness:
+    enabled: false
+  readiness:
+    enabled: false

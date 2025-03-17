@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        DOCKER_REGISTRY = 'kobi070'
+        REPO_NAME = 'exam'
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
+    }
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'dev', url: 'https://github.com/kobi070/e2e-devops.git'
+            }
+        }
+        
+        stage('install Lint & Security Scan') {
+            steps {
+                sh 'ls -l'
+                sh 'pip install flake8 bandit'
+            }
+        }
+
+        stage('Parallel Lint & Security Scan') {
+            steps {
+                parallel(
+                    Lint: {
+                        sh 'flake8 . || true'
+                    },
+                    Security: {
+                        sh 'bandit -r . || true'
+                    }
+                )
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip install -r docker/src/requirements.txt'
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t $DOCKER_REGISTRY/$REPO_NAME:$IMAGE_TAG docker/"
+                sh "docker tag $DOCKER_REGISTRY/$REPO_NAME:$IMAGE_TAG $DOCKER_REGISTRY/$REPO_NAME:latest"
+            }
+        }
+        
+
+        
+        stage('Push to Docker Hub') {
+            steps {
+                sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
+                sh "docker push $DOCKER_REGISTRY/$REPO_NAME:$IMAGE_TAG"
+                sh "docker push $DOCKER_REGISTRY/$REPO_NAME:latest"
+            }
+        }
+        
+    }
+}

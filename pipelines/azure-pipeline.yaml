@@ -1,0 +1,65 @@
+trigger:
+- dev
+
+    
+variables:
+  DOCKER_REGISTRY: 'kobi070'
+  REPO_NAME: 'exam'
+  IMAGE_TAG: $(Build.BuildId)
+
+stages:
+- stage: CloneRepository
+  jobs:
+  - job: CloneRepositoryJob
+    steps:
+    - checkout: self
+    - script: |
+        git fetch --all
+        git checkout dev
+      displayName: 'Clone Repository'
+
+- stage: InstallLintAndSecurityScan
+  jobs:
+  - job: InstallLintAndSecurityScanJob
+    steps:
+    - script: |
+        pip install flake8 bandit
+      displayName: 'Install Lint & Security Scan'
+
+- stage: ParallelLintAndSecurityScan
+  jobs:
+  - job: ParallelLintAndSecurityScanJob
+    steps:
+    - script: |
+        flake8 . || true
+      displayName: 'Run Lint'
+    - script: |
+        bandit -r . || true
+      displayName: 'Run Security Scan'
+
+- stage: InstallDependencies
+  jobs:
+  - job: InstallDependenciesJob
+    steps:
+    - script: |
+        pip install -r docker/src/requirements.txt
+      displayName: 'Install Dependencies'
+
+- stage: BuildDockerImage
+  jobs:
+  - job: BuildDockerImageJob
+    steps:
+    - script: |
+        docker build -t $(DOCKER_REGISTRY)/$(REPO_NAME):$(IMAGE_TAG) docker/
+        docker tag $(DOCKER_REGISTRY)/$(REPO_NAME):$(IMAGE_TAG) $(DOCKER_REGISTRY)/$(REPO_NAME):latest
+      displayName: 'Build Docker Image'
+
+- stage: PushToDockerHub
+  jobs:
+  - job: PushToDockerHubJob
+    steps:
+    - script: |
+        echo $(DOCKERHUB_CREDENTIALS_PSW) | docker login -u $(DOCKERHUB_CREDENTIALS_USR) --password-stdin
+        echo docker push $(DOCKER_REGISTRY)/$(REPO_NAME):$(IMAGE_TAG)
+        echo docker push $(DOCKER_REGISTRY)/$(REPO_NAME):latest
+      displayName: 'Push Docker Image to Docker Hub'
