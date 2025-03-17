@@ -35,7 +35,7 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r docker/requirements.txt'
+                sh 'pip install -r docker/src/requirements.txt'
             }
         }
         
