@@ -13,6 +13,7 @@ stages:
     steps:
     - checkout: self
     - script: |
+        git fetch --all
         git checkout dev
       displayName: 'Clone Repository'
 
