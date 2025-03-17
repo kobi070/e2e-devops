@@ -22,6 +22,13 @@ This is all the pipelines that we use in our project
 3. Refrence in that pipeline to this repo or the forked repo u use
 4. run the pipline in you own Jenkins
 
+### Azure
+1. Connect your forked repo trough Pipeline in Azure DevOps
+2. The pipeline will run on each push to dev branch in you git
+3. Goto branch feature/jenkins-azure --> make a change (or directly to dev)
+4. Merge the changes (or just push if on dev)
+5. Azure will auto run
+
 
 This will:
 - Clone The Repo
@@ -30,12 +37,15 @@ This will:
 - Build the docker image
 - Deploy the Docker image into you own repository
 
-### Prerequires
+### Prerequires - Jenkis
 - Jenkins docker cred by your docker cred
 - Github plugin
 - Docker plugin
 
-
+### Prerequires - Azure
+- Azure DevOps account
+- A organization
+- A Project
 
 
 ## Project Structure
@@ -45,5 +55,6 @@ This will:
 ├── terraform/                               
 │   ├── Jenkinsfile             
 │   ├── azure-pipeline.yaml              
+│   ├── README.md              
            
 ```
