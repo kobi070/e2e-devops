@@ -19,13 +19,13 @@ variable "vpc_id" {
 variable "ubuntu_ami" {
   type        = string
   description = "Ubuntu AMI"
-  default     = "ami-0c55b159cbfafe1f0" # TODO: Get the AMI from Data resource 
+  default     = "ami-0c4e709339fa8521a"  
 }
 
 variable "instance_type" {
   type        = string
   description = "value of the instance type"
-  default     = "t3.medium"
+  default     = "t4g.medium"
 }
 
 
