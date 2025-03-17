@@ -5,7 +5,7 @@ output "ec2_ip" {
 
 output "ssh_key_location" {
   description = "The SSH key location"
-  value       = aws_key_pair.builder_key.key_name
+  value       = aws_key_pair.builder_key.id
 }
 
 output "sg_id" {

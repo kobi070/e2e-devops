@@ -10,7 +10,13 @@ data "aws_subnets" "selected" {
     name   = "vpc-id"
     values = [data.aws_vpc.selected.id]
   }
+  filter {
+    name   = "default-for-az"
+    values = ["true"]
+  }
 }
+
+
 
 # Get all security groups associated with the VPC
 data "aws_security_groups" "selected" {
