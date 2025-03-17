@@ -1,7 +1,9 @@
 trigger:
 - dev
 
+    
 variables:
+- group: KobiSecrets
   DOCKER_REGISTRY: 'kobi070'
   REPO_NAME: 'exam'
   IMAGE_TAG: $(Build.BuildId)
