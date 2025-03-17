@@ -1,4 +1,7 @@
 ### Terraform ###
+
+# DONT INSERT KEYS
+*.pem
 # Local .terraform directories
 **/.terraform/*
 
