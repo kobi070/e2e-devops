@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'dev', url: 'https://github.com/kobi070/devopshift-welcome.git'
+                git branch: 'dev', url: 'https://github.com/kobi070/e2e-devops.git'
             }
         }
         
@@ -75,6 +75,15 @@ pipeline {
                 sh "echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin"
                 sh "docker push $DOCKER_REGISTRY/$REPO_NAME:$IMAGE_TAG"
                 sh "docker push $DOCKER_REGISTRY/$REPO_NAME:latest"
+            }
+        }
+        
+        post{
+            success {
+            echo 'Pipeline completed successfully!'
+            }
+            failure {
+                echo 'Pipeline failed! Check logs for details.'
             }
         }
     }
